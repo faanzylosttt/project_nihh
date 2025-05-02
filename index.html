@@ -39,6 +39,7 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       margin-top: 60px;
       box-shadow: 0 16px 50px rgba(0, 255, 0, 0.2);
+      transition: all 0.4s ease-in-out;
       animation: fadeInUp 0.6s ease forwards;
       opacity: 0;
     }
@@ -54,49 +55,51 @@
       }
     }
 
-    h1 {
+    h1.glitch {
+      position: relative;
       font-size: 32px;
       margin-bottom: 10px;
       font-weight: 600;
       color: #00ffcc;
       text-shadow: 0 0 10px #00ffcc50;
-      position: relative;
     }
 
-    h1::before,
-    h1::after {
+    h1.glitch::before,
+    h1.glitch::after {
       content: attr(data-text);
       position: absolute;
-      top: 0;
       left: 0;
+      top: 0;
       width: 100%;
       overflow: hidden;
       color: #00ffcc;
       clip: rect(0, 900px, 0, 0);
     }
 
-    h1::before {
+    h1.glitch::before {
       animation: glitchTop 2s infinite linear alternate-reverse;
+      color: #ff00c1;
     }
 
-    h1::after {
+    h1.glitch::after {
       animation: glitchBottom 2s infinite linear alternate-reverse;
+      color: #00caff;
     }
 
     @keyframes glitchTop {
-      0% { clip: rect(0, 9999px, 0, 0); }
-      10% { clip: rect(5px, 9999px, 25px, 0); left: 2px; }
-      20% { clip: rect(10px, 9999px, 30px, 0); left: -1px; }
-      30% { clip: rect(0, 9999px, 10px, 0); left: 1px; }
-      100% { clip: rect(0, 9999px, 0, 0); left: 0; }
+      0% { clip: rect(0, 9999px, 0, 0); transform: translate(0, 0); }
+      10% { clip: rect(5px, 9999px, 20px, 0); transform: translate(-2px, -2px); }
+      20% { clip: rect(10px, 9999px, 25px, 0); transform: translate(2px, 0); }
+      30% { clip: rect(0px, 9999px, 15px, 0); transform: translate(-1px, 2px); }
+      100% { clip: rect(0, 9999px, 0, 0); transform: translate(0, 0); }
     }
 
     @keyframes glitchBottom {
-      0% { clip: rect(0, 9999px, 0, 0); }
-      10% { clip: rect(35px, 9999px, 50px, 0); left: -2px; }
-      20% { clip: rect(30px, 9999px, 45px, 0); left: 2px; }
-      30% { clip: rect(40px, 9999px, 60px, 0); left: 0; }
-      100% { clip: rect(0, 9999px, 0, 0); left: 0; }
+      0% { clip: rect(0, 9999px, 0, 0); transform: translate(0, 0); }
+      10% { clip: rect(25px, 9999px, 40px, 0); transform: translate(1px, 1px); }
+      20% { clip: rect(20px, 9999px, 35px, 0); transform: translate(-2px, 1px); }
+      30% { clip: rect(15px, 9999px, 30px, 0); transform: translate(2px, -1px); }
+      100% { clip: rect(0, 9999px, 0, 0); transform: translate(0, 0); }
     }
 
     .subtitle {
@@ -135,7 +138,6 @@
       margin: 15px 0;
       gap: 10px;
       transition: 0.3s ease;
-      box-shadow: 0 4px 20px rgba(0, 255, 0, 0.05);
     }
 
     .payment-method:hover {
@@ -157,7 +159,6 @@
       border: none;
       color: white;
       outline: none;
-      text-shadow: 0 0 4px #00ff88;
     }
 
     .payment-method button {
@@ -267,7 +268,7 @@
   <canvas id="matrixEffect"></canvas>
 
   <div class="container">
-    <h1 data-text="Payment By Faanzy">Payment By Faanzy</h1>
+    <h1 class="glitch" data-text="Payment By Faanzy">Payment By Faanzy</h1>
     <p class="subtitle">Silakan pilih salah satu metode pembayaran</p>
 
     <img src="https://files.catbox.moe/2ppy45.jpg" class="qris-img" id="qrisImage" alt="QRIS">
