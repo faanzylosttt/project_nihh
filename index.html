@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Payment By Hamxyz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -11,11 +12,10 @@
 
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #0f0f0f;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       color: white;
       overflow-x: hidden;
-      position: relative;
     }
 
     .particles {
@@ -25,7 +25,7 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 1;
+      z-index: 0;
     }
 
     .particle {
@@ -34,7 +34,7 @@
       height: 4px;
       background: white;
       border-radius: 50%;
-      opacity: 0.5;
+      opacity: 0.3;
       animation: fall linear infinite;
     }
 
@@ -55,9 +55,10 @@
     h1 {
       font-size: 32px;
       margin-bottom: 10px;
+      font-weight: 600;
     }
 
-    p.subtitle {
+    .subtitle {
       color: #ccc;
       font-size: 16px;
       margin-bottom: 30px;
@@ -65,10 +66,14 @@
 
     .qris-img {
       width: 280px;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-      transition: transform 0.3s;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s ease;
+    }
+
+    .qris-img:hover {
+      transform: scale(1.05);
     }
 
     .note {
@@ -78,25 +83,32 @@
     }
 
     .payment-method {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 15px;
+      padding: 12px 16px;
       margin: 15px 0;
       gap: 10px;
+      transition: 0.3s ease;
+    }
+
+    .payment-method:hover {
+      transform: scale(1.02);
     }
 
     .payment-method img {
       width: 36px;
       height: 36px;
-      border-radius: 6px;
+      border-radius: 8px;
     }
 
     .payment-method input {
       flex: 1;
-      font-size: 18px;
+      font-size: 16px;
       background: transparent;
       border: none;
       color: white;
@@ -104,12 +116,18 @@
     }
 
     .payment-method button {
-      background: #00aaff;
+      background: linear-gradient(to right, #0072ff, #00c6ff);
       border: none;
       color: white;
-      padding: 6px 12px;
-      border-radius: 6px;
+      padding: 6px 14px;
+      font-weight: 600;
+      border-radius: 8px;
       cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .payment-method button:hover {
+      opacity: 0.85;
     }
 
     .main-button {
@@ -117,17 +135,24 @@
       width: 100%;
       padding: 14px;
       font-size: 18px;
-      background: linear-gradient(to right, #0066ff, #00bbff);
+      font-weight: 600;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
       color: white;
       border: none;
-      border-radius: 30px;
+      border-radius: 32px;
       margin-top: 20px;
       cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .main-button:hover {
+      opacity: 0.9;
+      transform: scale(1.02);
     }
 
     .small-text {
       margin-top: 15px;
-      color: #999;
+      color: #bbb;
       font-size: 14px;
     }
 
@@ -140,7 +165,7 @@
       width: 100%;
       height: 100%;
       overflow: auto;
-      background-color: rgba(0,0,0,0.85);
+      background-color: rgba(0, 0, 0, 0.85);
     }
 
     .modal-content {
@@ -148,7 +173,7 @@
       display: block;
       max-width: 90%;
       max-height: 90vh;
-      border-radius: 12px;
+      border-radius: 16px;
     }
 
     .modal-content:hover {
@@ -160,7 +185,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0.8);
-      background: #00bbff;
+      background: #00c6ff;
       color: white;
       padding: 12px 24px;
       border-radius: 12px;
@@ -218,12 +243,12 @@
     <button class="main-button" onclick="window.location.href='https://your-testimoni-link.com'">Testimoni</button>
   </div>
 
-  <!-- Modal for QRIS Zoom -->
+  <!-- Modal untuk Zoom QRIS -->
   <div id="modal" class="modal" onclick="closeModal()">
     <img class="modal-content" id="modalImage">
   </div>
 
-  <!-- Alert animasi copy -->
+  <!-- Alert copy -->
   <div id="copyAlert">Berhasil Disalin!</div>
 
   <script>
