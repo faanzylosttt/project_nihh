@@ -38,13 +38,16 @@
       backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.1);
       margin-top: 60px;
-      box-shadow: 0 8px 32px rgba(0, 255, 0, 0.1);
+      box-shadow: 0 12px 40px rgba(0, 255, 0, 0.15);
+      transition: all 0.3s ease-in-out;
     }
 
     h1 {
       font-size: 32px;
       margin-bottom: 10px;
       font-weight: 600;
+      color: #00ffcc;
+      text-shadow: 0 0 10px #00ffcc50;
     }
 
     .subtitle {
@@ -58,11 +61,12 @@
       border-radius: 12px;
       cursor: pointer;
       box-shadow: 0 8px 20px rgba(0, 255, 0, 0.3);
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .qris-img:hover {
       transform: scale(1.05);
+      box-shadow: 0 8px 28px rgba(0, 255, 0, 0.5);
     }
 
     .note {
@@ -85,7 +89,9 @@
     }
 
     .payment-method:hover {
+      background: rgba(0, 255, 0, 0.1);
       transform: scale(1.02);
+      box-shadow: 0 4px 20px rgba(0, 255, 0, 0.1);
     }
 
     .payment-method img {
@@ -112,6 +118,7 @@
       border-radius: 8px;
       cursor: pointer;
       transition: 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 198, 255, 0.3);
     }
 
     .payment-method button:hover {
@@ -124,13 +131,14 @@
       padding: 14px;
       font-size: 18px;
       font-weight: 600;
-      background: linear-gradient(to right, #00c6ff, #0072ff);
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
       color: white;
       border: none;
       border-radius: 32px;
       margin-top: 20px;
       cursor: pointer;
       transition: 0.3s ease;
+      box-shadow: 0 4px 14px rgba(0, 198, 255, 0.3);
     }
 
     .main-button:hover {
@@ -142,6 +150,15 @@
       margin-top: 15px;
       color: #bbb;
       font-size: 14px;
+    }
+
+    .footer {
+      margin-top: 40px;
+      font-size: 13px;
+      color: #888;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 20px;
     }
 
     .modal {
@@ -193,6 +210,10 @@
       .modal-content {
         width: 95%;
       }
+
+      .container {
+        padding: 30px 15px;
+      }
     }
   </style>
 </head>
@@ -229,6 +250,8 @@
 
     <button class="main-button" onclick="window.location.href='https://wa.me/6281234567890'">WhatsApp</button>
     <button class="main-button" onclick="window.location.href='https://your-testimoni-link.com'">Testimoni</button>
+
+    <div class="footer">&copy; 2025 Payment System by <strong>Faanzy</strong>. All rights reserved.</div>
   </div>
 
   <div id="modal" class="modal" onclick="closeModal()">
@@ -251,22 +274,22 @@
       });
     }
 
-function downloadQRIS() {
-  fetch('https://files.catbox.moe/2ppy45.jpg')
-    .then(response => response.blob())
-    .then(blob => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = 'qris.jpg';
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    })
-    .catch(() => alert('Gagal mengunduh QRIS. Coba lagi.'));
-}
+    function downloadQRIS() {
+      fetch('https://files.catbox.moe/2ppy45.jpg')
+        .then(response => response.blob())
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = url;
+          a.download = 'qris.jpg';
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+        })
+        .catch(() => alert('Gagal mengunduh QRIS. Coba lagi.'));
+    }
 
     const qrisImage = document.getElementById("qrisImage");
     const modal = document.getElementById("modal");
@@ -281,7 +304,6 @@ function downloadQRIS() {
       modal.style.display = "none";
     }
 
-    // Matrix effect
     const canvas = document.getElementById("matrixEffect");
     const ctx = canvas.getContext("2d");
     canvas.height = window.innerHeight;
