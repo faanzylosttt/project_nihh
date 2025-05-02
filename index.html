@@ -68,6 +68,7 @@
       border-radius: 10px;
       cursor: pointer;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      transition: transform 0.3s;
     }
 
     .note {
@@ -129,6 +130,52 @@
       color: #999;
       font-size: 14px;
     }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.85);
+    }
+
+    .modal-content {
+      margin: 5% auto;
+      display: block;
+      max-width: 90%;
+      max-height: 90vh;
+      border-radius: 12px;
+    }
+
+    .modal-content:hover {
+      cursor: zoom-out;
+    }
+
+    #copyAlert {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      background: #00bbff;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 18px;
+      opacity: 0;
+      z-index: 1000;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+    }
+
+    @media screen and (max-width: 600px) {
+      .modal-content {
+        width: 95%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -138,8 +185,8 @@
     <h1>Payment By Hamxyz</h1>
     <p class="subtitle">Silakan pilih salah satu metode pembayaran</p>
 
-    <img src="https://files.catbox.moe/2ppy45.jpg" class="qris-img" alt="QRIS" onclick="alert('Silakan screenshot QRIS ini')">
-    <p class="note">Tekan gambar di atas untuk screenshot atau gunakan tombol di bawah untuk download</p>
+    <img src="https://files.catbox.moe/2ppy45.jpg" class="qris-img" id="qrisImage" alt="QRIS">
+    <p class="note">Klik gambar di atas untuk perbesar / screenshot</p>
 
     <div class="payment-method">
       <img src="https://files.catbox.moe/x1tw8u.jpeg" alt="Dana">
@@ -166,13 +213,28 @@
     <button class="main-button" onclick="window.location.href='https://your-testimoni-link.com'">Testimoni</button>
   </div>
 
+  <!-- Modal for QRIS Zoom -->
+  <div id="modal" class="modal" onclick="closeModal()">
+    <img class="modal-content" id="modalImage">
+  </div>
+
+  <!-- Alert animasi copy -->
+  <div id="copyAlert">Berhasil Disalin!</div>
+
   <script>
     function copyText(id) {
       const input = document.getElementById(id);
       input.select();
       input.setSelectionRange(0, 99999);
       document.execCommand("copy");
-      alert("Disalin: " + input.value);
+
+      const alert = document.getElementById("copyAlert");
+      alert.style.opacity = 1;
+      alert.style.transform = "translate(-50%, -50%) scale(1)";
+      setTimeout(() => {
+        alert.style.opacity = 0;
+        alert.style.transform = "translate(-50%, -50%) scale(0.8)";
+      }, 2000);
     }
 
     function downloadQRIS() {
@@ -192,6 +254,19 @@
       p.style.animationDuration = (Math.random() * 5 + 5) + "s";
       p.style.animationDelay = (Math.random() * 10) + "s";
       container.appendChild(p);
+    }
+
+    const qrisImage = document.getElementById("qrisImage");
+    const modal = document.getElementById("modal");
+    const modalImg = document.getElementById("modalImage");
+
+    qrisImage.onclick = function () {
+      modal.style.display = "block";
+      modalImg.src = this.src;
+    }
+
+    function closeModal() {
+      modal.style.display = "none";
     }
   </script>
 </body>
