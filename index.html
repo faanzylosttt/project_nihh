@@ -13,34 +13,17 @@
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      background-color: #000;
       color: white;
       overflow-x: hidden;
     }
 
-    .particles {
+    canvas#matrixEffect {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
       z-index: 0;
-    }
-
-    .particle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: white;
-      border-radius: 50%;
-      opacity: 0.3;
-      animation: fall linear infinite;
-    }
-
-    @keyframes fall {
-      from { transform: translateY(-10px); }
-      to { transform: translateY(110vh); }
+      pointer-events: none;
     }
 
     .container {
@@ -50,6 +33,12 @@
       text-align: center;
       max-width: 500px;
       margin: auto;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 60px;
+      box-shadow: 0 8px 32px rgba(0, 255, 0, 0.1);
     }
 
     h1 {
@@ -68,7 +57,7 @@
       width: 280px;
       border-radius: 12px;
       cursor: pointer;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 8px 20px rgba(0, 255, 0, 0.3);
       transition: transform 0.3s ease;
     }
 
@@ -83,9 +72,8 @@
     }
 
     .payment-method {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 255, 0, 0.05);
+      border: 1px solid rgba(0, 255, 0, 0.2);
       border-radius: 16px;
       display: flex;
       align-items: center;
@@ -116,7 +104,7 @@
     }
 
     .payment-method button {
-      background: linear-gradient(to right, #0072ff, #00c6ff);
+      background: linear-gradient(to right, #00ff88, #00c6ff);
       border: none;
       color: white;
       padding: 6px 14px;
@@ -209,7 +197,7 @@
   </style>
 </head>
 <body>
-  <div class="particles" id="particles"></div>
+  <canvas id="matrixEffect"></canvas>
 
   <div class="container">
     <h1>Payment By Hamxyz</h1>
@@ -243,12 +231,10 @@
     <button class="main-button" onclick="window.location.href='https://your-testimoni-link.com'">Testimoni</button>
   </div>
 
-  <!-- Modal untuk Zoom QRIS -->
   <div id="modal" class="modal" onclick="closeModal()">
     <img class="modal-content" id="modalImage">
   </div>
 
-  <!-- Alert copy -->
   <div id="copyAlert">Berhasil Disalin!</div>
 
   <script>
@@ -274,16 +260,6 @@
       document.body.removeChild(link);
     }
 
-    const container = document.getElementById("particles");
-    for (let i = 0; i < 80; i++) {
-      const p = document.createElement("div");
-      p.classList.add("particle");
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.animationDuration = (Math.random() * 5 + 5) + "s";
-      p.style.animationDelay = (Math.random() * 10) + "s";
-      container.appendChild(p);
-    }
-
     const qrisImage = document.getElementById("qrisImage");
     const modal = document.getElementById("modal");
     const modalImg = document.getElementById("modalImage");
@@ -296,6 +272,36 @@
     function closeModal() {
       modal.style.display = "none";
     }
+
+    // Matrix effect
+    const canvas = document.getElementById("matrixEffect");
+    const ctx = canvas.getContext("2d");
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    const letters = "アァイィウエェカキクケコサシスセソ0123456789";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = Array.from({ length: columns }, () => 1);
+
+    function drawMatrix() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#00FF00";
+      ctx.font = fontSize + "px monospace";
+      drops.forEach((y, i) => {
+        const text = letters.charAt(Math.floor(Math.random() * letters.length));
+        ctx.fillText(text, i * fontSize, y * fontSize);
+        drops[i] = y * fontSize > canvas.height && Math.random() > 0.975 ? 0 : y + 1;
+      });
+    }
+
+    setInterval(drawMatrix, 50);
+
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
   </script>
 </body>
 </html>
