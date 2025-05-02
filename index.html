@@ -84,14 +84,16 @@
       border-radius: 14px;
       margin: 12px 0;
       transition: 0.3s ease;
-      flex-wrap: wrap;
+    }
+
+    .payment-method:hover {
+      transform: scale(1.02);
     }
 
     .payment-method img {
       width: 36px;
       height: 36px;
       border-radius: 8px;
-      margin-right: 10px;
     }
 
     .payment-method input {
@@ -192,26 +194,10 @@
     @media screen and (max-width: 600px) {
       .container {
         margin: 40px 16px;
-        padding: 20px;
       }
 
       .modal-content {
         width: 95%;
-      }
-
-      .payment-method {
-        flex-direction: column;
-        align-items: stretch;
-        justify-content: flex-start;
-      }
-
-      .payment-method img {
-        margin-right: 0;
-        margin-bottom: 10px;
-      }
-
-      .payment-method input {
-        margin-bottom: 10px;
       }
     }
   </style>
