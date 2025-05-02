@@ -1,310 +1,310 @@
-<!DOCTYPE html>  
-<html lang="id">  
-<head>  
-  <meta charset="UTF-8" />  
-  <meta name="viewport" content="width=device-width, initial-scale=1" />  
-  <title>Payment by Hamxyz</title>  
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">  
-  <style>  
-    * {  
-      box-sizing: border-box;  
-    }  
-  
-    body {  
-      margin: 0;  
-      font-family: 'Poppins', sans-serif;  
-      background-color: #000;  
-      color: white;  
-      overflow-x: hidden;  
-    }  
-  
-    canvas#matrixEffect {  
-      position: fixed;  
-      top: 0;  
-      left: 0;  
-      z-index: 0;  
-      pointer-events: none;  
-    }  
-  
-    .container {  
-      position: relative;  
-      z-index: 2;  
-      padding: 40px 24px;  
-      text-align: center;  
-      max-width: 480px;  
-      margin: 80px auto;  
-      background: rgba(255, 255, 255, 0.05);  
-      border-radius: 24px;  
-      backdrop-filter: blur(14px);  
-      border: 1px solid rgba(0, 255, 140, 0.2);  
-      box-shadow: 0 0 24px rgba(0, 255, 140, 0.2);  
-      transition: all 0.3s ease-in-out;  
-    }  
-  
-    h1 {  
-      font-size: 36px;  
-      margin-bottom: 8px;  
-      font-weight: 700;  
-      background: linear-gradient(to right, #00ffe7, #00ff8c);  
-      -webkit-background-clip: text;  
-      -webkit-text-fill-color: transparent;  
-    }  
-  
-    .subtitle {  
-      color: #ccc;  
-      font-size: 16px;  
-      margin-bottom: 28px;  
-    }  
-  
-    .qris-img {  
-      width: 260px;  
-      border-radius: 16px;  
-      box-shadow: 0 8px 24px rgba(0, 255, 170, 0.2);  
-      transition: transform 0.3s ease;  
-      cursor: pointer;  
-    }  
-  
-    .qris-img:hover {  
-      transform: scale(1.05);  
-    }  
-  
-    .note {  
-      font-size: 14px;  
-      color: #aaa;  
-      margin: 12px 0 24px;  
-    }  
-  
-    .payment-method {  
-      display: flex;  
-      align-items: center;  
-      justify-content: space-between;  
-      background: rgba(0, 255, 140, 0.05);  
-      border: 1px solid rgba(0, 255, 140, 0.2);  
-      padding: 10px 14px;  
-      border-radius: 14px;  
-      margin: 12px 0;  
-      transition: 0.3s ease;  
-    }  
-  
-    .payment-method:hover {  
-      transform: scale(1.02);  
-    }  
-  
-    .payment-method img {  
-      width: 36px;  
-      height: 36px;  
-      border-radius: 8px;  
-    }  
-  
-    .payment-method input {  
-      flex: 1;  
-      margin: 0 10px;  
-      background: transparent;  
-      border: none;  
-      color: #fff;  
-      font-size: 16px;  
-      outline: none;  
-    }  
-  
-    .payment-method button {  
-      background: linear-gradient(to right, #00ffbb, #00c6ff);  
-      border: none;  
-      padding: 6px 14px;  
-      font-weight: 600;  
-      border-radius: 8px;  
-      color: white;  
-      cursor: pointer;  
-      transition: 0.2s ease;  
-    }  
-  
-    .payment-method button:hover {  
-      opacity: 0.85;  
-    }  
-  
-    .main-button {  
-      display: block;  
-      width: 100%;  
-      padding: 14px;  
-      font-size: 18px;  
-      font-weight: 600;  
-      background: linear-gradient(135deg, #00f2ff, #00ff96);  
-      color: white;  
-      border: none;  
-      border-radius: 30px;  
-      margin-top: 16px;  
-      cursor: pointer;  
-      transition: 0.3s ease;  
-    }  
-  
-    .main-button:hover {  
-      transform: scale(1.03);  
-      opacity: 0.92;  
-    }  
-  
-    .small-text {  
-      margin-top: 14px;  
-      font-size: 13px;  
-      color: #888;  
-    }  
-  
-    .modal {  
-      display: none;  
-      position: fixed;  
-      z-index: 999;  
-      top: 0;  
-      left: 0;  
-      width: 100%;  
-      height: 100%;  
-      background: rgba(0, 0, 0, 0.9);  
-    }  
-  
-    .modal-content {  
-      margin: 5% auto;  
-      display: block;  
-      max-width: 90%;  
-      max-height: 90vh;  
-      border-radius: 16px;  
-    }  
-  
-    .modal-content:hover {  
-      cursor: zoom-out;  
-    }  
-  
-    #copyAlert {  
-      position: fixed;  
-      top: 50%;  
-      left: 50%;  
-      transform: translate(-50%, -50%) scale(0.8);  
-      background: #00e0ff;  
-      color: white;  
-      padding: 12px 24px;  
-      border-radius: 12px;  
-      font-size: 18px;  
-      opacity: 0;  
-      z-index: 1000;  
-      pointer-events: none;  
-      transition: transform 0.4s ease, opacity 0.4s ease;  
-    }  
-  
-    .show-popup {  
-      opacity: 1 !important;  
-      transform: translate(-50%, -50%) scale(1) !important;  
-    }  
-  
-    @media screen and (max-width: 600px) {  
-      .container {  
-        margin: 40px 16px;  
-      }  
-  
-      .modal-content {  
-        width: 95%;  
-      }  
-    }  
-  </style>  
-</head>  
-<body>  
-<canvas id="matrixEffect"></canvas>  
-  
-<div class="container">  
-  <h1>Payment</h1>  
-  <p class="subtitle">Pilih metode pembayaran di bawah</p>  
-  
-  <img src="https://files.catbox.moe/2ppy45.jpg" class="qris-img" id="qrisImage" alt="QRIS">  
-  <p class="note">Klik gambar untuk perbesar atau download</p>  
-  
-  <div class="payment-method">  
-    <img src="https://files.catbox.moe/x1tw8u.jpeg" alt="Dana">  
-    <input type="text" value="081234567890" id="dana" readonly>  
-    <button onclick="copyText('dana')">COPY</button>  
-  </div>  
-  
-  <div class="payment-method">  
-    <img src="https://files.catbox.moe/pczy7t.jpg" alt="OVO">  
-    <input type="text" value="081298765432" id="ovo" readonly>  
-    <button onclick="copyText('ovo')">COPY</button>  
-  </div>  
-  
-  <div class="payment-method">  
-    <img src="https://files.catbox.moe/3gig7z.jpg" alt="GoPay">  
-    <input type="text" value="081212345678" id="gopay" readonly>  
-    <button onclick="copyText('gopay')">COPY</button>  
-  </div>  
-  
-  <button class="main-button" onclick="downloadQRIS()">Download QRIS</button>  
-  <button class="main-button" onclick="window.location.href='https://wa.me/6281234567890'">WhatsApp</button>  
-  <button class="main-button" onclick="window.location.href='https://your-testimoni-link.com'">Testimoni</button>  
-  
-  <div class="small-text">Simple Payment UI by HamxyzOffc</div>  
-</div>  
-  
-<div id="modal" class="modal" onclick="closeModal()">  
-  <img class="modal-content" id="modalImage">  
-</div>  
-  
-<div id="copyAlert">Berhasil Disalin!</div>  
-  
-<script>  
-  function copyText(id) {  
-    const text = document.getElementById(id).value;  
-    navigator.clipboard.writeText(text).then(() => {  
-      const alert = document.getElementById("copyAlert");  
-      alert.classList.remove("show-popup");  
-      void alert.offsetWidth;  
-      alert.classList.add("show-popup");  
-      setTimeout(() => alert.classList.remove("show-popup"), 2000);  
-    });  
-  }  
-  
-  function downloadQRIS() {  
-    const link = document.createElement('a');  
-    link.href = 'content://media/external/downloads/1001142518';  
-    link.download = 'qris.jpg';  
-    document.body.appendChild(link);  
-    link.click();  
-    document.body.removeChild(link);  
-  }  
-  
-  const qrisImage = document.getElementById("qrisImage");  
-  const modal = document.getElementById("modal");  
-  const modalImg = document.getElementById("modalImage");  
-  
-  qrisImage.onclick = () => {  
-    modal.style.display = "block";  
-    modalImg.src = qrisImage.src;  
-  };  
-  
-  function closeModal() {  
-    modal.style.display = "none";  
-  }  
-  
-  // Matrix Rain  
-  const canvas = document.getElementById("matrixEffect");  
-  const ctx = canvas.getContext("2d");  
-  canvas.height = window.innerHeight;  
-  canvas.width = window.innerWidth;  
-  
-  const letters = "アァイィウエェカキクケコサシスセソ0123456789";  
-  const fontSize = 14;  
-  const columns = canvas.width / fontSize;  
-  const drops = Array.from({ length: columns }, () => 1);  
-  
-  function drawMatrix() {  
-    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";  
-    ctx.fillRect(0, 0, canvas.width, canvas.height);  
-    ctx.fillStyle = "#00FF00";  
-    ctx.font = fontSize + "px monospace";  
-    drops.forEach((y, i) => {  
-      const text = letters.charAt(Math.floor(Math.random() * letters.length));  
-      ctx.fillText(text, i * fontSize, y * fontSize);  
-      drops[i] = y * fontSize > canvas.height && Math.random() > 0.975 ? 0 : y + 1;  
-    });  
-  }  
-  
-  setInterval(drawMatrix, 50);  
-  window.addEventListener("resize", () => {  
-    canvas.width = window.innerWidth;  
-    canvas.height = window.innerHeight;  
-  });  
-</script>  
-</body>  
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Payment by Hamxyz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #000;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    canvas#matrixEffect {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      padding: 40px 24px;
+      text-align: center;
+      max-width: 480px;
+      margin: 80px auto;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 24px;
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(0, 255, 140, 0.2);
+      box-shadow: 0 0 24px rgba(0, 255, 140, 0.2);
+      transition: all 0.3s ease-in-out;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 8px;
+      font-weight: 700;
+      background: linear-gradient(to right, #00ffe7, #00ff8c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: #ccc;
+      font-size: 16px;
+      margin-bottom: 28px;
+    }
+
+    .qris-img {
+      width: 260px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 255, 170, 0.2);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .qris-img:hover {
+      transform: scale(1.05);
+    }
+
+    .note {
+      font-size: 14px;
+      color: #aaa;
+      margin: 12px 0 24px;
+    }
+
+    .payment-method {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0, 255, 140, 0.05);
+      border: 1px solid rgba(0, 255, 140, 0.2);
+      padding: 10px 14px;
+      border-radius: 14px;
+      margin: 12px 0;
+      transition: 0.3s ease;
+    }
+
+    .payment-method:hover {
+      transform: scale(1.02);
+    }
+
+    .payment-method img {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+    }
+
+    .payment-method input {
+      flex: 1;
+      margin: 0 10px;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .payment-method button {
+      background: linear-gradient(to right, #00ffbb, #00c6ff);
+      border: none;
+      padding: 6px 14px;
+      font-weight: 600;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .payment-method button:hover {
+      opacity: 0.85;
+    }
+
+    .main-button {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      font-size: 18px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #00f2ff, #00ff96);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      margin-top: 16px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .main-button:hover {
+      transform: scale(1.03);
+      opacity: 0.92;
+    }
+
+    .small-text {
+      margin-top: 14px;
+      font-size: 13px;
+      color: #888;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+    }
+
+    .modal-content {
+      margin: 5% auto;
+      display: block;
+      max-width: 90%;
+      max-height: 90vh;
+      border-radius: 16px;
+    }
+
+    .modal-content:hover {
+      cursor: zoom-out;
+    }
+
+    #copyAlert {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      background: #00e0ff;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 18px;
+      opacity: 0;
+      z-index: 1000;
+      pointer-events: none;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+
+    .show-popup {
+      opacity: 1 !important;
+      transform: translate(-50%, -50%) scale(1) !important;
+    }
+
+    @media screen and (max-width: 600px) {
+      .container {
+        margin: 40px 16px;
+      }
+
+      .modal-content {
+        width: 95%;
+      }
+    }
+  </style>
+</head>
+<body>
+<canvas id="matrixEffect"></canvas>
+
+<div class="container">
+  <h1>Payment</h1>
+  <p class="subtitle">Pilih metode pembayaran di bawah</p>
+
+  <img src="https://files.catbox.moe/2ppy45.jpg" class="qris-img" id="qrisImage" alt="QRIS">
+  <p class="note">Klik gambar untuk perbesar atau download</p>
+
+  <div class="payment-method">
+    <img src="https://files.catbox.moe/x1tw8u.jpeg" alt="Dana">
+    <input type="text" value="081234567890" id="dana" readonly>
+    <button onclick="copyText('dana')">COPY</button>
+  </div>
+
+  <div class="payment-method">
+    <img src="https://files.catbox.moe/pczy7t.jpg" alt="OVO">
+    <input type="text" value="081298765432" id="ovo" readonly>
+    <button onclick="copyText('ovo')">COPY</button>
+  </div>
+
+  <div class="payment-method">
+    <img src="https://files.catbox.moe/3gig7z.jpg" alt="GoPay">
+    <input type="text" value="081212345678" id="gopay" readonly>
+    <button onclick="copyText('gopay')">COPY</button>
+  </div>
+
+  <button class="main-button" onclick="downloadQRIS()">Download QRIS</button>
+  <button class="main-button" onclick="window.location.href='https://wa.me/6281234567890'">WhatsApp</button>
+  <button class="main-button" onclick="window.location.href='https://your-testimoni-link.com'">Testimoni</button>
+
+  <div class="small-text">Simple Payment UI by HamxyzOffc</div>
+</div>
+
+<div id="modal" class="modal" onclick="closeModal()">
+  <img class="modal-content" id="modalImage">
+</div>
+
+<div id="copyAlert">Berhasil Disalin!</div>
+
+<script>
+  function copyText(id) {
+    const text = document.getElementById(id).value;
+    navigator.clipboard.writeText(text).then(() => {
+      const alert = document.getElementById("copyAlert");
+      alert.classList.remove("show-popup");
+      void alert.offsetWidth;
+      alert.classList.add("show-popup");
+      setTimeout(() => alert.classList.remove("show-popup"), 2000);
+    });
+  }
+
+  function downloadQRIS() {
+    const link = document.createElement('a');
+    link.href = 'https://files.catbox.moe/2ppy45.jpg';
+    link.download = 'qris.jpg';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  const qrisImage = document.getElementById("qrisImage");
+  const modal = document.getElementById("modal");
+  const modalImg = document.getElementById("modalImage");
+
+  qrisImage.onclick = () => {
+    modal.style.display = "block";
+    modalImg.src = qrisImage.src;
+  };
+
+  function closeModal() {
+    modal.style.display = "none";
+  }
+
+  // Matrix Rain
+  const canvas = document.getElementById("matrixEffect");
+  const ctx = canvas.getContext("2d");
+  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
+
+  const letters = "アァイィウエェカキクケコサシスセソ0123456789";
+  const fontSize = 14;
+  const columns = canvas.width / fontSize;
+  const drops = Array.from({ length: columns }, () => 1);
+
+  function drawMatrix() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#00FF00";
+    ctx.font = fontSize + "px monospace";
+    drops.forEach((y, i) => {
+      const text = letters.charAt(Math.floor(Math.random() * letters.length));
+      ctx.fillText(text, i * fontSize, y * fontSize);
+      drops[i] = y * fontSize > canvas.height && Math.random() > 0.975 ? 0 : y + 1;
+    });
+  }
+
+  setInterval(drawMatrix, 50);
+  window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+</script>
+</body>
 </html>
