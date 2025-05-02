@@ -251,14 +251,23 @@
       });
     }
 
-    function downloadQRIS() {
-  const link = document.createElement('a');
-  link.href = '2ppy45.jpg (908×1280)';
-  link.setAttribute('download', 'qris.jpg');
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+function downloadQRIS() {
+  fetch('https://files.catbox.moe/2ppy45.jpg')
+    .then(response => response.blob())
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = 'qris.jpg';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    })
+    .catch(() => alert('Gagal mengunduh QRIS. Coba lagi.'));
 }
+</script>
 
     const qrisImage = document.getElementById("qrisImage");
     const modal = document.getElementById("modal");
