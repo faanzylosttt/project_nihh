@@ -155,35 +155,60 @@
       cursor: zoom-out;
     }
 
+    /* Popup salin keren */
     #copyAlert {
       position: fixed;
-      top: 50%;
+      bottom: 30px;
       left: 50%;
-      transform: translate(-50%, -50%) scale(0.8);
-      background: rgba(0, 187, 255, 0.9);
+      transform: translateX(-50%) translateY(100px);
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
       color: white;
-      padding: 14px 28px;
-      border-radius: 16px;
-      font-size: 18px;
+      padding: 12px 20px;
+      border-radius: 40px;
+      font-size: 16px;
       font-weight: bold;
-      box-shadow: 0 8px 24px rgba(0, 187, 255, 0.3);
-      backdrop-filter: blur(6px);
-      opacity: 0;
-      z-index: 1000;
-      pointer-events: none;
+      box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
       display: flex;
       align-items: center;
       gap: 10px;
-      transition: opacity 0.4s ease, transform 0.4s ease;
+      opacity: 0;
+      z-index: 999;
+      animation: none;
+      pointer-events: none;
     }
 
-    #copyAlert.show {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
+    .copy-icon {
+      font-size: 20px;
+      animation: bounceIn 0.3s ease-out forwards;
     }
 
-    #copyAlert .icon {
-      font-size: 22px;
+    @keyframes bounceIn {
+      0% { transform: scale(0); opacity: 0; }
+      60% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes showPopup {
+      0% {
+        transform: translateX(-50%) translateY(100px);
+        opacity: 0;
+      }
+      20% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
+      80% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(-50%) translateY(100px);
+        opacity: 0;
+      }
+    }
+
+    .show-popup {
+      animation: showPopup 2.2s ease forwards;
     }
 
     @media screen and (max-width: 600px) {
@@ -228,13 +253,16 @@
     <button class="main-button" onclick="window.location.href='https://your-testimoni-link.com'">Testimoni</button>
   </div>
 
-  <!-- Modal for QRIS Zoom -->
+  <!-- Modal Zoom -->
   <div id="modal" class="modal" onclick="closeModal()">
     <img class="modal-content" id="modalImage">
   </div>
 
-  <!-- Alert animasi copy -->
-  <div id="copyAlert"><span class="icon">✔</span> Berhasil Disalin!</div>
+  <!-- Alert Copy -->
+  <div id="copyAlert">
+    <div class="copy-icon">✔</div>
+    <div class="copy-text">Disalin!</div>
+  </div>
 
   <script>
     function copyText(id) {
@@ -244,11 +272,9 @@
       document.execCommand("copy");
 
       const alert = document.getElementById("copyAlert");
-      alert.classList.add("show");
-
-      setTimeout(() => {
-        alert.classList.remove("show");
-      }, 2000);
+      alert.classList.remove("show-popup");
+      void alert.offsetWidth; // trigger reflow
+      alert.classList.add("show-popup");
     }
 
     function downloadQRIS() {
@@ -260,6 +286,7 @@
       document.body.removeChild(link);
     }
 
+    // Partikel
     const container = document.getElementById("particles");
     for (let i = 0; i < 80; i++) {
       const p = document.createElement("div");
@@ -270,6 +297,7 @@
       container.appendChild(p);
     }
 
+    // Zoom QRIS
     const qrisImage = document.getElementById("qrisImage");
     const modal = document.getElementById("modal");
     const modalImg = document.getElementById("modalImage");
