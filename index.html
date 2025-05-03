@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
+    /* ...[GAYA SAMA PERSIS DARI VERSI KAMU]... */
     :root {
       --primary: #00ffd5;
       --accent: #0057ff;
@@ -329,6 +330,7 @@
     <button class="main-button" onclick="downloadQRIS()"><i class="fas fa-download"></i> Download QRIS</button>
     <button class="main-button" onclick="window.location.href='https://wa.me/6281234567890'"><i class="fab fa-whatsapp"></i> WhatsApp</button>
     <button class="main-button" onclick="window.location.href='https://your-testimoni-link.com'"><i class="fas fa-star"></i> Testimoni</button>
+    <button class="main-button" onclick="sendToTelegram()"><i class="fab fa-telegram-plane"></i> Kirim ke Telegram</button>
 
     <div class="footer">&copy; 2025 Payment System by <strong>Faanzy</strong>. All rights reserved.</div>
   </div>
@@ -383,6 +385,7 @@
       modal.style.display = "none";
     }
 
+    // MATRIX EFFECT
     const canvas = document.getElementById("matrixEffect");
     const ctx = canvas.getContext("2d");
     canvas.height = window.innerHeight;
@@ -411,6 +414,46 @@
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     });
+
+    // TELEGRAM INTEGRATION
+    function sendToTelegram() {
+      const dana = document.getElementById("dana").value;
+      const ovo = document.getElementById("ovo").value;
+      const gopay = document.getElementById("gopay").value;
+
+      const message = `
+<b>Payment Request:</b>
+<b>Dana:</b> ${dana}
+<b>OVO:</b> ${ovo}
+<b>GoPay:</b> ${gopay}
+<b>Waktu:</b> ${new Date().toLocaleString()}
+`;
+
+      const token = 'YOUR_BOT_TOKEN';
+      const chat_id = 'YOUR_CHAT_ID';
+      const url = `https://api.telegram.org/bot${token}/sendMessage`;
+
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          chat_id: chat_id,
+          text: message,
+          parse_mode: 'HTML'
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.ok) {
+            alert('Berhasil dikirim ke Telegram!');
+          } else {
+            alert('Gagal mengirim ke Telegram!');
+          }
+        })
+        .catch(() => alert('Gagal terhubung ke Telegram.'));
+    }
   </script>
 </body>
 </html>
