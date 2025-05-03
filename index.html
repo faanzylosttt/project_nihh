@@ -5,7 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Payment By Faanzy</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
+    :root {
+      --primary: #00ffd5;
+      --accent: #0057ff;
+      --bg-glass: rgba(255, 255, 255, 0.06);
+      --blur: 24px;
+      --border-glow: rgba(0, 255, 213, 0.3);
+    }
+
     * {
       box-sizing: border-box;
       padding: 0;
@@ -13,7 +22,6 @@
     }
 
     body {
-      margin: 0;
       font-family: 'Poppins', sans-serif;
       background-color: #000;
       color: white;
@@ -36,11 +44,11 @@
       text-align: center;
       max-width: 520px;
       margin: 80px auto;
-      background: rgba(255, 255, 255, 0.06);
+      background: var(--bg-glass);
       border-radius: 24px;
-      backdrop-filter: blur(18px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 20px 60px rgba(0, 255, 0, 0.15);
+      backdrop-filter: blur(var(--blur));
+      border: 1px solid var(--border-glow);
+      box-shadow: 0 30px 80px rgba(0, 255, 213, 0.15);
       animation: fadeInUp 0.6s ease forwards;
       opacity: 0;
     }
@@ -57,50 +65,11 @@
     }
 
     h1.glitch {
-      position: relative;
       font-size: 34px;
       margin-bottom: 14px;
       font-weight: 600;
-      color: #00ffcc;
-      text-shadow: 0 0 12px #00ffcc80;
-    }
-
-    h1.glitch::before,
-    h1.glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      overflow: hidden;
-      color: #00ffcc;
-      clip: rect(0, 900px, 0, 0);
-    }
-
-    h1.glitch::before {
-      animation: glitchTop 2s infinite linear alternate-reverse;
-      color: #ff00c1;
-    }
-
-    h1.glitch::after {
-      animation: glitchBottom 2s infinite linear alternate-reverse;
-      color: #00caff;
-    }
-
-    @keyframes glitchTop {
-      0% { clip: rect(0, 9999px, 0, 0); transform: translate(0, 0); }
-      10% { clip: rect(5px, 9999px, 20px, 0); transform: translate(-2px, -2px); }
-      20% { clip: rect(10px, 9999px, 25px, 0); transform: translate(2px, 0); }
-      30% { clip: rect(0px, 9999px, 15px, 0); transform: translate(-1px, 2px); }
-      100% { clip: rect(0, 9999px, 0, 0); transform: translate(0, 0); }
-    }
-
-    @keyframes glitchBottom {
-      0% { clip: rect(0, 9999px, 0, 0); transform: translate(0, 0); }
-      10% { clip: rect(25px, 9999px, 40px, 0); transform: translate(1px, 1px); }
-      20% { clip: rect(20px, 9999px, 35px, 0); transform: translate(-2px, 1px); }
-      30% { clip: rect(15px, 9999px, 30px, 0); transform: translate(2px, -1px); }
-      100% { clip: rect(0, 9999px, 0, 0); transform: translate(0, 0); }
+      color: var(--primary);
+      text-shadow: 0 0 16px var(--primary);
     }
 
     .subtitle {
@@ -129,8 +98,8 @@
     }
 
     .payment-method {
-      background: rgba(0, 255, 0, 0.06);
-      border: 1px solid rgba(0, 255, 0, 0.18);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 16px;
       display: flex;
       align-items: center;
@@ -139,11 +108,12 @@
       margin: 12px 0;
       gap: 10px;
       transition: 0.3s ease;
+      backdrop-filter: blur(14px);
     }
 
     .payment-method:hover {
-      background: rgba(0, 255, 0, 0.1);
-      transform: scale(1.02);
+      background: rgba(255, 255, 255, 0.08);
+      transform: scale(1.03);
       box-shadow: 0 4px 20px rgba(0, 255, 0, 0.2);
     }
 
@@ -184,19 +154,23 @@
       padding: 14px;
       font-size: 18px;
       font-weight: 600;
-      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      background: linear-gradient(135deg, var(--primary), var(--accent));
       color: white;
       border: none;
       border-radius: 32px;
       margin-top: 20px;
       cursor: pointer;
       transition: 0.3s ease;
-      box-shadow: 0 6px 18px rgba(0, 198, 255, 0.3);
+      box-shadow: 0 6px 18px var(--border-glow);
     }
 
     .main-button:hover {
       opacity: 0.92;
       transform: scale(1.02);
+    }
+
+    .main-button i {
+      margin-right: 8px;
     }
 
     .footer {
@@ -237,7 +211,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0.8);
-      background: #00c6ff;
+      background: var(--accent);
       color: white;
       padding: 12px 24px;
       border-radius: 12px;
@@ -268,7 +242,7 @@
   <canvas id="matrixEffect"></canvas>
 
   <div class="container">
-    <h1 class="glitch" data-text="Payment By Faanzy">Payment By Faanzy</h1>
+    <h1 class="glitch">Payment By Faanzy</h1>
     <p class="subtitle">Silakan pilih salah satu metode pembayaran</p>
 
     <img src="https://files.catbox.moe/2ppy45.jpg" class="qris-img" id="qrisImage" alt="QRIS">
@@ -277,24 +251,24 @@
     <div class="payment-method">
       <img src="https://files.catbox.moe/x1tw8u.jpeg" alt="Dana">
       <input type="text" value="082281704226" id="dana" readonly>
-      <button onclick="copyText('dana')">COPY</button>
+      <button onclick="copyText('dana')"><i class="fas fa-copy"></i> COPY</button>
     </div>
 
     <div class="payment-method">
       <img src="https://files.catbox.moe/pczy7t.jpg" alt="OVO">
       <input type="text" value="082281704226" id="ovo" readonly>
-      <button onclick="copyText('ovo')">COPY</button>
+      <button onclick="copyText('ovo')"><i class="fas fa-copy"></i> COPY</button>
     </div>
 
     <div class="payment-method">
       <img src="https://files.catbox.moe/3gig7z.jpg" alt="GoPay">
       <input type="text" value="082281704226" id="gopay" readonly>
-      <button onclick="copyText('gopay')">COPY</button>
+      <button onclick="copyText('gopay')"><i class="fas fa-copy"></i> COPY</button>
     </div>
 
-    <button class="main-button" onclick="downloadQRIS()">Download QRIS</button>
-    <button class="main-button" onclick="window.location.href='https://wa.me/6281234567890'">WhatsApp</button>
-    <button class="main-button" onclick="window.location.href='https://your-testimoni-link.com'">Testimoni</button>
+    <button class="main-button" onclick="downloadQRIS()"><i class="fas fa-download"></i> Download QRIS</button>
+    <button class="main-button" onclick="window.location.href='https://wa.me/6281234567890'"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+    <button class="main-button" onclick="window.location.href='https://your-testimoni-link.com'"><i class="fas fa-star"></i> Testimoni</button>
 
     <div class="footer">&copy; 2025 Payment System by <strong>Faanzy</strong>. All rights reserved.</div>
   </div>
@@ -362,7 +336,7 @@
     function drawMatrix() {
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#00FF00";
+      ctx.fillStyle = "#00ffd5";
       ctx.font = fontSize + "px monospace";
       drops.forEach((y, i) => {
         const text = letters.charAt(Math.floor(Math.random() * letters.length));
