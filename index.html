@@ -3,354 +3,250 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Payment By Faanzy</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Faanzy Payment System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --primary: #00ffd5;
-      --accent: #0057ff;
-      --bg-glass: rgba(255, 255, 255, 0.06);
-      --blur: 24px;
-      --border-glow: rgba(0, 255, 213, 0.3);
-    }
-
-    * {
-      box-sizing: border-box;
-      padding: 0;
-      margin: 0;
-    }
-
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #000;
+      background: #000;
       color: white;
-      overflow-x: hidden;
-      line-height: 1.6;
+      margin: 0;
+      padding: 0;
     }
 
-    canvas#matrixEffect {
-      position: fixed;
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      background: #111;
+      padding: 16px;
+      position: sticky;
       top: 0;
-      left: 0;
-      z-index: 0;
-      pointer-events: none;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0, 255, 213, 0.15);
     }
 
-    .container {
-      position: relative;
-      z-index: 2;
-      padding: 40px 24px;
-      text-align: center;
-      max-width: 520px;
-      margin: 80px auto;
-      background: var(--bg-glass);
-      border-radius: 24px;
-      backdrop-filter: blur(var(--blur));
-      border: 1px solid var(--border-glow);
-      box-shadow: 0 30px 80px rgba(0, 255, 213, 0.15);
-      animation: fadeInUp 0.6s ease forwards;
-      opacity: 0;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        transform: translateY(30px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-
-    h1.glitch {
-      font-size: 34px;
-      margin-bottom: 14px;
+    nav button {
+      background: linear-gradient(135deg, #00ffd5, #0057ff);
+      border: none;
+      padding: 10px 20px;
+      color: white;
       font-weight: 600;
-      color: var(--primary);
-      text-shadow: 0 0 16px var(--primary);
-    }
-
-    .subtitle {
-      color: #ccc;
-      font-size: 16px;
-      margin-bottom: 28px;
-    }
-
-    .qris-img {
-      width: 280px;
-      border-radius: 14px;
+      border-radius: 30px;
       cursor: pointer;
-      box-shadow: 0 10px 24px rgba(0, 255, 0, 0.25);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: 0.3s;
     }
 
-    .qris-img:hover {
-      transform: scale(1.05);
-      box-shadow: 0 12px 30px rgba(0, 255, 0, 0.45);
+    nav button:hover {
+      opacity: 0.9;
     }
 
-    .note {
-      font-size: 14px;
-      margin: 16px 0 28px;
-      color: #aaa;
+    .page {
+      display: none;
+      padding: 40px 20px;
+      max-width: 720px;
+      margin: auto;
     }
 
-    .payment-method {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
+    .page.active {
+      display: block;
+    }
+
+    h1 {
+      color: #00ffd5;
+      text-align: center;
+      text-shadow: 0 0 12px #00ffd5;
+    }
+
+    .produk-item {
+      background: rgba(255,255,255,0.05);
+      margin: 12px 0;
+      padding: 14px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .produk-item button {
+      background: #00c6ff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .pembayaran .metode {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 12px 16px;
       margin: 12px 0;
-      gap: 10px;
-      transition: 0.3s ease;
-      backdrop-filter: blur(14px);
+      background: #111;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid #333;
     }
 
-    .payment-method:hover {
-      background: rgba(255, 255, 255, 0.08);
-      transform: scale(1.03);
-      box-shadow: 0 4px 20px rgba(0, 255, 0, 0.2);
+    .pembayaran .metode img {
+      width: 40px;
+      margin-right: 10px;
     }
 
-    .payment-method img {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-    }
-
-    .payment-method input {
+    .pembayaran input {
       flex: 1;
-      font-size: 16px;
       background: transparent;
       border: none;
       color: white;
-      outline: none;
+      font-size: 16px;
     }
 
-    .payment-method button {
-      background: linear-gradient(to right, #00ff88, #00c6ff);
+    .pembayaran button.copy {
+      background: #00ffd5;
       border: none;
-      color: white;
-      padding: 6px 16px;
-      font-weight: 600;
-      border-radius: 10px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      color: black;
       cursor: pointer;
-      transition: 0.2s ease;
-      box-shadow: 0 2px 10px rgba(0, 198, 255, 0.25);
+      font-weight: bold;
     }
 
-    .payment-method button:hover {
-      opacity: 0.85;
+    .qris {
+      text-align: center;
+      margin: 30px 0;
     }
 
-    .main-button {
-      display: block;
-      width: 100%;
-      padding: 14px;
-      font-size: 18px;
-      font-weight: 600;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: white;
-      border: none;
-      border-radius: 32px;
-      margin-top: 20px;
-      cursor: pointer;
-      transition: 0.3s ease;
-      box-shadow: 0 6px 18px var(--border-glow);
-    }
-
-    .main-button:hover {
-      opacity: 0.92;
-      transform: scale(1.02);
-    }
-
-    .main-button i {
-      margin-right: 8px;
+    .qris img {
+      width: 250px;
+      border-radius: 8px;
     }
 
     .footer {
-      margin-top: 48px;
-      font-size: 13px;
-      color: #888;
       text-align: center;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding-top: 20px;
+      margin-top: 40px;
+      font-size: 14px;
+      opacity: 0.7;
     }
 
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.88);
-      backdrop-filter: blur(2px);
-    }
-
-    .modal-content {
-      margin: 5% auto;
-      display: block;
-      max-width: 92%;
-      max-height: 90vh;
-      border-radius: 16px;
-    }
-
-    .modal-content:hover {
-      cursor: zoom-out;
-    }
-
-    #copyAlert {
+    .alert {
       position: fixed;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%) scale(0.8);
-      background: var(--accent);
-      color: white;
+      transform: translate(-50%, -50%);
+      background: #00ffd5;
+      color: black;
       padding: 12px 24px;
+      border-radius: 8px;
+      display: none;
+      z-index: 999;
+      font-weight: bold;
+    }
+
+    .action-buttons {
+      text-align: center;
+      margin: 24px 0;
+    }
+
+    .action-buttons button {
+      background: #00c6ff;
+      border: none;
+      color: white;
+      padding: 12px 18px;
+      margin: 8px;
       border-radius: 12px;
-      font-size: 18px;
-      opacity: 0;
-      z-index: 1000;
-      pointer-events: none;
-      transition: transform 0.4s ease, opacity 0.4s ease;
+      cursor: pointer;
+      font-weight: 600;
     }
 
-    .show-popup {
-      opacity: 1 !important;
-      transform: translate(-50%, -50%) scale(1) !important;
-    }
-
-    @media screen and (max-width: 600px) {
-      .modal-content {
-        width: 95%;
-      }
-
-      .container {
-        padding: 28px 18px;
-      }
-    }
   </style>
 </head>
 <body>
-  <canvas id="matrixEffect"></canvas>
 
-  <div class="container">
-    <h1 class="glitch">Payment By Faanzy</h1>
-    <p class="subtitle">Silakan pilih salah satu metode pembayaran</p>
+  <nav>
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('produk')">Produk</button>
+    <button onclick="showPage('pembayaran')">Pembayaran</button>
+  </nav>
 
-    <img src="https://files.catbox.moe/2ppy45.jpg" class="qris-img" id="qrisImage" alt="QRIS">
-    <p class="note">Klik gambar di atas untuk perbesar / screenshot</p>
+  <!-- Home -->
+  <div id="home" class="page active">
+    <h1>Faanzy Store</h1>
+    <p style="text-align:center;">Selamat datang! Temukan produk terbaik dan sistem pembayaran praktis di sini.</p>
+  </div>
 
-    <div class="payment-method">
+  <!-- Produk -->
+  <div id="produk" class="page">
+    <h1>Produk Kami</h1>
+    <div class="produk-item">
+      <span>Produk A - Rp10.000</span>
+      <button>Beli</button>
+    </div>
+    <div class="produk-item">
+      <span>Produk B - Rp20.000</span>
+      <button>Beli</button>
+    </div>
+    <div class="produk-item">
+      <span>Produk C - Rp30.000</span>
+      <button>Beli</button>
+    </div>
+  </div>
+
+  <!-- Pembayaran -->
+  <div id="pembayaran" class="page pembayaran">
+    <h1>PAYMENT BY FAANZY</h1>
+    <p>Silakan pilih salah satu metode pembayaran berikut:</p>
+
+    <div class="qris">
+      <img src="https://files.catbox.moe/2ppy45.jpg" alt="QRIS">
+      <p>Klik kanan gambar dan pilih simpan</p>
+    </div>
+
+    <div class="metode">
       <img src="https://files.catbox.moe/x1tw8u.jpeg" alt="Dana">
       <input type="text" value="082281704226" id="dana" readonly>
-      <button onclick="copyText('dana')"><i class="fas fa-copy"></i> COPY</button>
+      <button class="copy" onclick="copyText('dana')"><i class="fa fa-copy"></i> COPY</button>
     </div>
 
-    <div class="payment-method">
+    <div class="metode">
       <img src="https://files.catbox.moe/pczy7t.jpg" alt="OVO">
       <input type="text" value="082281704226" id="ovo" readonly>
-      <button onclick="copyText('ovo')"><i class="fas fa-copy"></i> COPY</button>
+      <button class="copy" onclick="copyText('ovo')"><i class="fa fa-copy"></i> COPY</button>
     </div>
 
-    <div class="payment-method">
+    <div class="metode">
       <img src="https://files.catbox.moe/3gig7z.jpg" alt="GoPay">
       <input type="text" value="082281704226" id="gopay" readonly>
-      <button onclick="copyText('gopay')"><i class="fas fa-copy"></i> COPY</button>
+      <button class="copy" onclick="copyText('gopay')"><i class="fa fa-copy"></i> COPY</button>
     </div>
 
-    <button class="main-button" onclick="downloadQRIS()"><i class="fas fa-download"></i> Download QRIS</button>
-    <button class="main-button" onclick="window.location.href='https://wa.me/6281234567890'"><i class="fab fa-whatsapp"></i> WhatsApp</button>
-    <button class="main-button" onclick="window.location.href='https://your-testimoni-link.com'"><i class="fas fa-star"></i> Testimoni</button>
+    <div class="action-buttons">
+      <button onclick="window.open('https://wa.me/6281234567890')"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+      <button onclick="window.open('https://your-testimoni-link.com')"><i class="fa fa-star"></i> Testimoni</button>
+    </div>
 
     <div class="footer">&copy; 2025 Payment System by <strong>Faanzy</strong>. All rights reserved.</div>
   </div>
 
-  <div id="modal" class="modal" onclick="closeModal()">
-    <img class="modal-content" id="modalImage">
-  </div>
-
-  <div id="copyAlert">Berhasil Disalin!</div>
+  <div id="alert" class="alert">Berhasil disalin!</div>
 
   <script>
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
     function copyText(id) {
       const text = document.getElementById(id).value;
       navigator.clipboard.writeText(text).then(() => {
-        const alert = document.getElementById("copyAlert");
-        alert.classList.remove("show-popup");
-        void alert.offsetWidth;
-        alert.classList.add("show-popup");
+        const alert = document.getElementById('alert');
+        alert.style.display = 'block';
         setTimeout(() => {
-          alert.classList.remove("show-popup");
-        }, 2000);
+          alert.style.display = 'none';
+        }, 1500);
       });
     }
-
-    function downloadQRIS() {
-      fetch('https://files.catbox.moe/2ppy45.jpg')
-        .then(response => response.blob())
-        .then(blob => {
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.style.display = 'none';
-          a.href = url;
-          a.download = 'qris.jpg';
-          document.body.appendChild(a);
-          a.click();
-          window.URL.revokeObjectURL(url);
-          document.body.removeChild(a);
-        })
-        .catch(() => alert('Gagal mengunduh QRIS. Coba lagi.'));
-    }
-
-    const qrisImage = document.getElementById("qrisImage");
-    const modal = document.getElementById("modal");
-    const modalImg = document.getElementById("modalImage");
-
-    qrisImage.onclick = function () {
-      modal.style.display = "block";
-      modalImg.src = this.src;
-    }
-
-    function closeModal() {
-      modal.style.display = "none";
-    }
-
-    const canvas = document.getElementById("matrixEffect");
-    const ctx = canvas.getContext("2d");
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
-
-    const letters = "アァイィウエェカキクケコサシスセソ0123456789";
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
-    const drops = Array.from({ length: columns }, () => 1);
-
-    function drawMatrix() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#00ffd5";
-      ctx.font = fontSize + "px monospace";
-      drops.forEach((y, i) => {
-        const text = letters.charAt(Math.floor(Math.random() * letters.length));
-        ctx.fillText(text, i * fontSize, y * fontSize);
-        drops[i] = y * fontSize > canvas.height && Math.random() > 0.975 ? 0 : y + 1;
-      });
-    }
-
-    setInterval(drawMatrix, 50);
-
-    window.addEventListener("resize", () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
   </script>
+
 </body>
 </html>
